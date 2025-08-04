@@ -1,0 +1,31 @@
+const userService = require("../service/user.service");
+const {
+  NAME_OR_PASSWORD_IS_REQUIRED,
+  NAME_IS_NOT_EXISTS,
+  PASSWORD_IS_INCORRENT,
+} = require("../config/error");
+const md5Encrypt = require("../utils/md5");
+
+// 登录验证
+const verifyLogin = async (ctx, next) => {
+  const { username, password } = ctx.request.body;
+  if (!username || !password) {
+    return ctx.app.emit("error", NAME_OR_PASSWORD_IS_REQUIRED, ctx);
+  }
+  const users = await userService.findUserByUsername(username);
+  const user = users[0];
+  if (!user) {
+    return ctx.app.emit("error", NAME_IS_NOT_EXISTS, ctx);
+  }
+  if (user.password !== md5Encrypt(password)) {
+    return ctx.app.emit("error", PASSWORD_IS_INCORRENT, ctx);
+  }
+  // 将user对象保存到ctx中,可供后面的中间件使用
+  ctx.user = user;
+
+  await next();
+};
+
+module.exports = {
+  verifyLogin,
+};
