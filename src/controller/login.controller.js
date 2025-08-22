@@ -11,6 +11,10 @@ class loginController {
     });
     ctx.body = { code: 0, data: { token, id, username } };
   }
+  // 测试接口
+  test(ctx, next) {
+    ctx.body = "测试接口成功";
+  }
 }
 
 module.exports = new loginController();
