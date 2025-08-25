@@ -1,4 +1,6 @@
 const fileService = require("../service/file.service");
+const userService = require("../service/user.service");
+const { SERVER_HOST, SERVER_PORT } = require("../config/server");
 
 class fileController {
   // 上传头像
@@ -12,10 +14,14 @@ class fileController {
     const { filename, mimetype, size } = ctx.request.file;
     const { id } = ctx.user;
     const result = await fileService.saveAvatar(filename, mimetype, size, id);
+    // 将头像信息保存到用户表中
+    const avatarUrl = `${SERVER_HOST}:${SERVER_PORT}/user/avatar/${id}`;
+    const result2 = await userService.updateUserAvatar(avatarUrl, id);
+
     ctx.body = {
       code: 0,
       message: '"头像上传成功"',
-      data: result,
+      data: avatarUrl,
     };
   }
 }

@@ -14,6 +14,12 @@ class UserService {
     const [values] = await connection.execute(statement, [username]);
     return values;
   }
+  // 更新用户头像
+  async updateUserAvatar(avatarUrl, userId) {
+    const statement = "UPDATE user SET avatar_url = ? WHERE id = ?;";
+    const [result] = await connection.execute(statement, [avatarUrl, userId]);
+    return result;
+  }
 }
 
 module.exports = new UserService();
