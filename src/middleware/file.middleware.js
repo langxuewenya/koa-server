@@ -1,10 +1,11 @@
 const multer = require("@koa/multer");
+const { UPLOAD_AVATAR_pATH } = require("../config/path");
 
 //上传头像中间件
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads"); // 上传文件保存的路径
+    cb(null, UPLOAD_AVATAR_pATH); // 上传文件保存的路径
   },
 });
 
