@@ -6,7 +6,7 @@ const connectionPool = mysql.createPool({
   port: 3306,
   database: "admin-server",
   user: "root",
-  password: "@adminlxw123456.",
+  password: "@Adminlmy123",
   connectionLimit: 5,
 });
 
